@@ -1,0 +1,23 @@
+{
+  "name": "weather-seeds.db",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peabnuts123/weather-seeds.git"
+  },
+  "keywords": [],
+  "author": "peabnuts123",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/peabnuts123/weather-seeds/issues"
+  },
+  "homepage": "https://github.com/peabnuts123/weather-seeds#readme",
+  "dependencies": {
+    "pg": "^8.0.2",
+    "sequelize": "^5.21.6",
+    "typescript": "^3.8.3",
+    "sequelize-cli": "^5.5.1"
+  }
+}
