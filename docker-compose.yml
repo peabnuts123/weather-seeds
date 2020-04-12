@@ -4,6 +4,7 @@ services:
   db:
     container_name: 'weather_db'
     build: db
+    restart: unless-stopped
     env_file: db/.env.docker
     volumes:
       - './db/data:/var/lib/postgresql/data'
@@ -16,6 +17,7 @@ services:
   fetcher:
     container_name: 'weather_fetcher'
     image: 'node:lts-alpine'
+    restart: unless-stopped
     env_file: fetcher/.env.docker
     volumes:
       # Fetcher source
@@ -35,6 +37,7 @@ services:
   #   container_name: 'weather_www'
   #   image: 'node:lts-alpine'
   #   # build: www
+  #   restart: unless-stopped
   #   environment:
   #     PORT: 8080
   #     NODE_ENV: production
