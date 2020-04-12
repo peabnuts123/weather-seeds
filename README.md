@@ -35,7 +35,7 @@ The project is set up to be easily deployable from Docker using Docker Compose (
     1. Edit the file `.env` and fill out all the values
 1. Start the stack by running
     ```shell
-    docker-compose up --detach
+    docker-compose up --detach --build
     ```
 
 ## Running the project locally
