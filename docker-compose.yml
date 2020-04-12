@@ -24,8 +24,8 @@ services:
       - './db/models:/home/node/db/models'
       # Fake node_modules for shared code
       - './fetcher/node_modules:/home/node/db/node_modules'
-      # @TODO move to /etc/periodic/daily
-      - './fetcher/daily-fetch.sh:/etc/periodic/15min/daily-fetch'
+      # Add daily script to daily cron folder
+      - './fetcher/daily-fetch.sh:/etc/periodic/daily/daily-fetch'
     working_dir: /home/node/fetcher
     entrypoint: ./run.sh
     depends_on:
