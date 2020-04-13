@@ -10,7 +10,7 @@ const CONFIG = {
     MAX_CONNECTION_ATTEMPTS: 5,
   },
   SERVER: {
-    PORT: (process.env.PORT && Number(process.env.PORT)) as number,
+    PORT: (process.env.API_PORT && Number(process.env.API_PORT)) as number,
   },
 };
 
@@ -28,7 +28,7 @@ if (!CONFIG.DB.DB_NAME) {
 
 // PORT
 if (!CONFIG.SERVER.PORT) {
-  throw new Error("Cannot start Fetcher - Environment variable 'PORT' is empty");
+  throw new Error("Cannot start Fetcher - Environment variable 'API_PORT' is empty");
 }
 
 // Logger config

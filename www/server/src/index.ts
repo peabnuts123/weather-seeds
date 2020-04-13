@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import path from 'path';
+import cors from 'cors';
 
 import Config from '@app/config';
 import Logger from '@app/util/Logger';
@@ -19,6 +20,12 @@ const app = express();
 app.use(morgan('combined'));
 // Serve the frontend
 app.use(express.static(STATIC_ROOT));
+
+// Development-only middleware
+if (process.env.NODE_ENV === 'development') {
+  // Allow all origins in CORS
+  app.use(cors());
+}
 
 // Register /api route
 app.use('/api', ApiRouter);

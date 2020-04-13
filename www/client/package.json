@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "deploy": "preact build --dest ../server/public --no-prerender",
-    "start": "preact watch",
+    "start": "preact watch --port 8081",
     "lint": "eslint --no-error-on-unmatched-pattern src/**/*.{ts,tsx,js,jsx} tests/**/*.{ts,tsx,js,jsx}"
   },
   "dependencies": {
