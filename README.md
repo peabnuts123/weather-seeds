@@ -116,7 +116,8 @@ A docker stack of containers that can just fire up and run.
   - [x] ~~Make fetcher tolerant of unavailable DB - retry, etc.~~
   - [x] ~~Straighten out the Fetcher project lol its awful~~
   - [x] ~~Straighten out .env across the 3 containers~~
-  - [ ] Add eslint to fetcher project
-  - [ ] Make express API that serves data from the DB
+  - [x] ~~Add eslint to fetcher project~~
+  - [x] ~~Make express API that serves data from the DB~~
+  - [ ] Tell sequelize to stop logging SQL queries
   - [ ] Figure out a plan for traefik hosting / exposed db port
   - [ ] (BUG) Make fetcher logging the right time zone ?
