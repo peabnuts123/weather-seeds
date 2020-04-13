@@ -3,18 +3,19 @@ FROM node:lts-alpine
 WORKDIR /home/node
 
 # Copy sources
-COPY client client
-COPY server server
+RUN mkdir www
+COPY client www/client
+COPY server www/server
 
 # Build client
-RUN cd client && \
+RUN cd www/client && \
   npm ci && \
   npm run deploy
 
 # Build server
-RUN cd server && \
+RUN cd www/server && \
   npm ci
 
-WORKDIR /home/node/server
+WORKDIR /home/node/www/server
 
 CMD ["npm", "start"]

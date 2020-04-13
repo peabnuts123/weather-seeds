@@ -4,8 +4,9 @@ import path from 'path';
 
 import Config from '@app/config';
 import Logger from '@app/util/Logger';
-
 import ApiRouter from '@app/api';
+import { connectToDatabase } from '@app/db';
+
 
 // Config
 const STATIC_ROOT = path.join(__dirname, '../public');
@@ -27,7 +28,13 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(STATIC_ROOT, 'index.html'));
 });
 
-// Run server
-app.listen(Config.SERVER.PORT, function () {
-  Logger.log(`Server listening on port ${Config.SERVER.PORT}`);
-});
+async function main() {
+  // Establish connection to database
+  await connectToDatabase();
+
+  // Run server
+  app.listen(Config.SERVER.PORT, function () {
+    Logger.log(`Server listening on port ${Config.SERVER.PORT}`);
+  });
+}
+main();

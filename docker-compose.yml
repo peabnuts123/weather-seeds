@@ -40,6 +40,11 @@ services:
     env_file: www/.env.docker
     ports:
       - '8080:8080'
+    volumes:
+      # Shared code
+      - './db/models:/home/node/db/models'
+      # Fake node_modules for shared code
+      - './www/server/node_modules:/home/node/db/node_modules'
   #   labels:
   #     # Traefik config
   #     traefik.enable: "true"
