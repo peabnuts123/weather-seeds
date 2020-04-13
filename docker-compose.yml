@@ -33,14 +33,13 @@ services:
     depends_on:
       - db
 
-  # www:
-  #   container_name: 'weather_www'
-  #   image: 'node:lts-alpine'
-  #   # build: www
-  #   restart: unless-stopped
-  #   environment:
-  #     PORT: 8080
-  #     NODE_ENV: production
+  www:
+    container_name: 'weather_www'
+    build: www
+    restart: unless-stopped
+    env_file: www/.env.docker
+    ports:
+      - '8080:8080'
   #   labels:
   #     # Traefik config
   #     traefik.enable: "true"
@@ -50,8 +49,8 @@ services:
   #   networks:
   #     # Connect to external network used by traefik
   #     - traefik
-  #   depends_on:
-  #     - db
+    depends_on:
+      - db
 
 # networks:
 #   # Named network created for Traefik

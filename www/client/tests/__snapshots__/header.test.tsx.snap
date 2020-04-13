@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component Renders consistently 1`] = `
+<body>
+  <div>
+    <header
+      class="Header"
+    >
+      <h1>
+        Blag
+      </h1>
+      <nav>
+        <a
+          class="active"
+          href="/"
+        >
+          Home
+        </a>
+        <a
+          class=""
+          href="/about"
+        >
+          About
+        </a>
+        <a
+          class=""
+          href="/limes"
+        >
+          Limes
+        </a>
+      </nav>
+    </header>
+  </div>
+</body>
+`;

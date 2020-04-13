@@ -1,0 +1,31 @@
+// Colors
+$purple: #2D173D;
+$pink: #FF98B7;
+$blue: #5FB2FF;
+
+// Greys
+$black: #000000;
+$grey-dark:  #4a4a4a;
+$grey-medium:   #B0B0B0;
+$grey-light: #F3F1F1;
+$white:      #FFFFFF;
+
+// Aliases
+$text: rgba($black, 0.9);
+$primary: $blue;
+$secondary: $purple;
+$link: $blue;
+$selection: $pink;
+$border: $grey-light;
+
+// Breakpoints
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-laptop: 1280px;
+$breakpoint-desktop: 1600px;
+
+// Margin and padding
+$m: 10px;
+
+// Branding
+$radius: 5px;

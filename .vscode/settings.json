@@ -1,0 +1,7 @@
+{
+  "eslint.workingDirectories": [
+    "fetcher",
+    "www/client",
+    "www/server"
+  ]
+}

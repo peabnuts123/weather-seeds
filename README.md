@@ -118,4 +118,5 @@ A docker stack of containers that can just fire up and run.
   - [x] ~~Straighten out .env across the 3 containers~~
   - [ ] Add eslint to fetcher project
   - [ ] Make express API that serves data from the DB
+  - [ ] Figure out a plan for traefik hosting / exposed db port
   - [ ] (BUG) Make fetcher logging the right time zone ?
