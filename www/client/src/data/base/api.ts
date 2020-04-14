@@ -12,7 +12,7 @@ export class ApiError extends Error {
  */
 class Api {
   private async request(path: RequestInfo, options: RequestInit = {}) {
-    const response = await fetch(`${API_BASE}/${path}`, options);
+    const response = await fetch(`${API_BASE}${path}`, options);
 
     if (response.status === 200) {
       // Success

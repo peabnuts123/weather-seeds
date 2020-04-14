@@ -33,7 +33,7 @@ export default {
       //  i.e. if the value is "world" it will plop the string "world" into your code
       //  where you reference the variable. So this must be converted to `'world'` i.e. a string
       //  within a string, so that the resulting code receives a string
-      API_BASE: JSON.stringify(process.env.NODE_ENV ? `http://localhost:${process.env.API_PORT}/api` : `/api`),
+      API_BASE: JSON.stringify(process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.API_PORT}/api` : `/api`),
     }));
   }
 
