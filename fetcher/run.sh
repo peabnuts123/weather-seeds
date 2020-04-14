@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# Fail on non-zero exit code
+set -e;
+
 # Install dependencies
 npm i;
 

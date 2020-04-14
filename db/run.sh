@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
+# Fail on non-zero exit code
+set -e;
+
 # Print node version
 echo "node version: $(node --version)";
 echo "npm version: $(npm --version)";
 
 # Enter source directory
-cd src || exit 1;
+cd src;
 
 # Install node.js dependencies
 npm install;
