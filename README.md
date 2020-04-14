@@ -26,16 +26,10 @@ The project is set up to be easily deployable from Docker using Docker Compose (
         cp fetcher/sample.env.docker fetcher/.env.docker
         ```
     1. Edit the the file `fetcher/.env.docker` and fill out all the values
-1. (Planned) ~~Setup environment for www project~~
-1. Setup environment config for Docker
-    1. Copy file `sample.env` to `.env`
-        ```shell
-        cp sample.env .env
-        ```
-    1. Edit the file `.env` and fill out all the values
+1. (@TODO) ~~Setup environment for www project~~
 1. Start the stack by running
     ```shell
-    docker-compose up --detach --build
+    docker-compose up --detach
     ```
 
 ## Running the project locally
@@ -118,6 +112,6 @@ A docker stack of containers that can just fire up and run.
   - [x] ~~Straighten out .env across the 3 containers~~
   - [x] ~~Add eslint to fetcher project~~
   - [x] ~~Make express API that serves data from the DB~~
+  - [ ] Write documentation for www running and development
   - [ ] Tell sequelize to stop logging SQL queries
-  - [ ] Figure out a plan for traefik hosting / exposed db port
   - [ ] (BUG) Make fetcher logging the right time zone ?
