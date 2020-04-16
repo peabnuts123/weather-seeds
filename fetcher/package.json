@@ -5,7 +5,8 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register src/index.ts"
+    "fetch": "ts-node -r tsconfig-paths/register src/entrypoints/fetch.ts",
+    "check": "ts-node -r tsconfig-paths/register src/entrypoints/check.ts"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,8 @@
     "node-fetch": "^2.6.0",
     "pg": "^8.0.2",
     "pg-hstore": "^2.3.3",
+    "random-js": "^2.1.0",
+    "rword": "^3.1.1",
     "sequelize": "^5.21.6",
     "ts-node": "^8.8.2",
     "tsconfig-paths": "^3.9.0",

@@ -1,14 +1,16 @@
-import Logger from '@app/util/Logger';
-import { connectToDatabase } from '@app/db';
 import OpenWeatherMap from '@app/open-weather-map';
+import Config from '@app/config';
+import Logger from '@common/util/Logger';
+import { connectToDatabase } from '@common/db';
 
 import WeatherInfo from '@db/models/WeatherInfo';
+import runJob from '@app/util/runJob';
 
 async function main() {
   Logger.log(`Job running`);
 
   // Establish connection to database
-  await connectToDatabase();
+  await connectToDatabase(Config.DB);
 
   // Request OpenWeatherMap API
   let weatherResponse = await OpenWeatherMap.getCurrentWeatherByCity('Wellington', 'nz');
@@ -29,16 +31,4 @@ async function main() {
 }
 
 // ENTRY POINT
-if (process.env.NODE_ENV === 'production') {
-  // In production, sleep for a period to ensure DB migrations have been run
-  const SLEEP_TIMEOUT_SECONDS = 30;
-
-  Logger.log(`Job awake. Sleeping for ${SLEEP_TIMEOUT_SECONDS} seconds to ensure DB migrations have run`);
-  setTimeout(() => {
-    main();
-  }, SLEEP_TIMEOUT_SECONDS * 1000);
-} else {
-  // Development mode - run process immediately
-  Logger.log('Job awake. Development mode - running immediately')
-  main();
-}
+runJob('fetch', main);

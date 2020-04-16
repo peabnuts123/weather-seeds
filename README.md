@@ -113,5 +113,7 @@ A docker stack of containers that can just fire up and run.
   - [x] ~~Add eslint to fetcher project~~
   - [x] ~~Make express API that serves data from the DB~~
   - [ ] Write documentation for www running and development
-  - [ ] Tell sequelize to stop logging SQL queries
-  - [ ] (BUG) Make fetcher logging the right time zone ?
+  - [x] ~~Tell sequelize to stop logging SQL queries~~
+  - [ ] Document `npm run dev:link-common`
+  - [ ] Document .env and variables within
+  - [x] ~~(BUG) Make docker containers the right time zone~~

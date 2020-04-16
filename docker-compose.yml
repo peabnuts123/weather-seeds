@@ -7,7 +7,11 @@ services:
     restart: unless-stopped
     env_file: db/.env.docker
     volumes:
+      # Timezone
+      - '${LOCAL_TIME_MOUNT:-/etc/localtime}:/etc/localtime:ro'
+      # Data directory
       - './db/data:/var/lib/postgresql/data'
+      # db project source code
       - './db:/var/lib/postgresql/src'
     ports:
       - '5432:5432'
@@ -20,14 +24,20 @@ services:
     restart: unless-stopped
     env_file: fetcher/.env.docker
     volumes:
+      # Timezone
+      - '${LOCAL_TIME_MOUNT:-/etc/localtime}:/etc/localtime:ro'
       # Fetcher source
       - './fetcher:/home/node/fetcher'
       # Shared code
       - './db/models:/home/node/db/models'
+      - './common:/home/node/common'
       # Fake node_modules for shared code
-      - './fetcher/node_modules:/home/node/db/node_modules'
-      # Add daily script to daily cron folder
-      - './fetcher/daily-fetch.sh:/etc/periodic/daily/daily-fetch'
+      - './fetcher/node_modules:/home/node/node_modules:ro'
+      # Add daily scripts to daily cron folder
+      - './fetcher/daily-scripts/01-fetch.sh:/etc/periodic/${FETCHER_JOB_FREQUENCY:-daily}/01-fetch'
+      - './fetcher/daily-scripts/02-check.sh:/etc/periodic/${FETCHER_JOB_FREQUENCY:-daily}/02-check'
+      # Custom crontab configuration
+      - './fetcher/crontab.properties:/var/spool/cron/crontabs/root'
     working_dir: /home/node/fetcher
     entrypoint: ./run.sh
     depends_on:
@@ -39,12 +49,15 @@ services:
     restart: unless-stopped
     env_file: www/.env.docker
     volumes:
+      # Timezone
+      - '${LOCAL_TIME_MOUNT:-/etc/localtime}:/etc/localtime:ro'
       # www source
       - './www:/home/node/www'
       # Shared code
       - './db/models:/home/node/db/models'
+      - './common:/home/node/common'
       # Fake node_modules for shared code
-      - './www/server/node_modules:/home/node/db/node_modules'
+      - './www/server/node_modules:/home/node/node_modules:ro'
     working_dir: /home/node/www
     entrypoint: ./run.sh
     depends_on:

@@ -100,7 +100,7 @@ export default class Logger {
    */
   private static performLog(logFunction: (...args: any[]) => void, maybeLogLevelOrObject: LogLevel | any | undefined, restObjects: any[]) {
     // Collection of things to print
-    let values = [];
+    const values = [];
     // Log level - whether to print or not
     let logLevel = LogLevel.normal;
 

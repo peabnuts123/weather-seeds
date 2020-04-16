@@ -1,7 +1,7 @@
 import Config from '@app/config';
 import Api from '@app/api';
 import OpenWeatherMapResponse from '@app/types/OpenWeatherMapResponse';
-import Logger, { LogLevel } from '@app/util/Logger';
+import Logger, { LogLevel } from '@common/util/Logger';
 
 import { WEATHER_TYPE } from '@db/models/WeatherInfo';
 

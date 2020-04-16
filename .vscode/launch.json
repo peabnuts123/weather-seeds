@@ -7,12 +7,12 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug Fetcher",
+      "name": "Debug Fetcher | fetch",
       "skipFiles": [
         "<node_internals>/**"
       ],
       "args": [
-        "${workspaceRoot}/fetcher/src/index.ts"
+        "${workspaceRoot}/fetcher/src/entrypoints/fetch.ts"
       ],
       "cwd": "${workspaceRoot}/fetcher",
       "runtimeArgs": [
@@ -28,6 +28,31 @@
       "outFiles": [
         "${workspaceFolder}/**/*.js"
       ]
-    }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Fetcher | check",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "args": [
+        "${workspaceRoot}/fetcher/src/entrypoints/check.ts"
+      ],
+      "cwd": "${workspaceRoot}/fetcher",
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register",
+        "-r",
+        "tsconfig-paths/register"
+      ],
+      "envFile": "${workspaceFolder}/fetcher/.env.local",
+      "env": {
+        "TS_NODE_IGNORE": "false",
+      },
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ]
+    },
   ]
 }

@@ -3,10 +3,11 @@ import morgan from 'morgan';
 import path from 'path';
 import cors from 'cors';
 
+import { connectToDatabase } from '@common/db';
+import Logger from '@common/util/Logger';
+
 import Config from '@app/config';
-import Logger from '@app/util/Logger';
 import ApiRouter from '@app/api';
-import { connectToDatabase } from '@app/db';
 
 
 // Config
@@ -37,7 +38,7 @@ app.get('*', (req, res) => {
 
 async function main() {
   // Establish connection to database
-  await connectToDatabase();
+  await connectToDatabase(Config.DB);
 
   // Run server
   app.listen(Config.SERVER.PORT, function () {

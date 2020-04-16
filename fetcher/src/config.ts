@@ -1,4 +1,4 @@
-import Logger, { LogLevel } from '@app/util/Logger';
+import Logger, { LogLevel } from '@common/util/Logger';
 
 // Config / environment variables
 const CONFIG = {

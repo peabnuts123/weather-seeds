@@ -4,4 +4,4 @@
 cd /home/node/fetcher || exit 1;
 
 # Invoke fetch script - pipe stdout and stderr to log file
-npm start >> fetcher.log 2>&1;
+npm run check >> fetcher.log 2>&1;

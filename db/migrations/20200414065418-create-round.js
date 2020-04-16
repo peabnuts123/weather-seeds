@@ -7,18 +7,20 @@ module.exports = {
    * @param {Sequelize} Sequelize
    */
   async up(queryInterface, Sequelize) {
-    return queryInterface.createTable('WeatherInfo', {
+    return queryInterface.createTable('Round', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      type: {
-        type: Sequelize.STRING,
+      startDate: {
+        type: Sequelize.DATE,
+        allowNull: false,
       },
-      raw: {
-        type: Sequelize.JSON,
+      endDate: {
+        type: Sequelize.DATE,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
@@ -35,6 +37,6 @@ module.exports = {
    * @param {Sequelize} Sequelize
    */
   async down(queryInterface, Sequelize) {
-    return queryInterface.dropTable('WeatherInfo');
-  }
+    return queryInterface.dropTable('Round');
+  },
 };
