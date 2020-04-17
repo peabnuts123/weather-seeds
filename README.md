@@ -10,7 +10,7 @@ You will need the following in-order to run the project:
     * The free tier is enough as the app just calls their "current weather" endpoint - simply register an account on the website.
 
 
-## Setting up the project
+## Running the project
 
 The project is set up to be easily deployable from Docker using Docker Compose (it would probably run in Docker swarm too, if that's your thing).
 
@@ -34,9 +34,9 @@ The project is set up to be easily deployable from Docker using Docker Compose (
 
 ## Running the project locally
 
-The fetcher project can also be run locally (e.g. for development). You will need a database instance running, and for this I still recommend running the db container in Docker. You can run just the database with `docker-compose up -d db`. You will also need node.js installed on your machine
+The fetcher project can also be run locally (e.g. for development). You will need a database instance running, and for this I still recommend running the db container in Docker. You can run just the database with `docker-compose up -d db`. You will also need node.js installed on your machine.
 
-You will need to set up the fetcher project's environment config manually (usually docker sources your `.env.docker` file for you). This means setting the environment variables found in `fetcher/sample.env.docker` before running the application. How you achieve this is up to you as there's no common standard (as far as I know).
+You will need to set up the fetcher project's environment config manually (usually docker sources the `.env.docker` file for you). This means setting the environment variables found in `fetcher/sample.env.docker` before running the application. How you achieve this is up to you as there's no common standard (as far as I know).
 
 Here are a few ways to achieve this:
   * I have a utility script for sourcing .env files. It looks a bit like this:
@@ -117,3 +117,6 @@ A docker stack of containers that can just fire up and run.
   - [ ] Document `npm run dev:link-common`
   - [ ] Document .env and variables within
   - [x] ~~(BUG) Make docker containers the right time zone~~
+  - [ ] ? Move package.json to top level and have all projects share
+  - [ ] ~~Move repos to common~~ and have fetcher/check use them
+  - [ ] (BUG) Violation of Round/Seed unique constraint will crash - needs to be handled

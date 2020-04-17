@@ -6,7 +6,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
-    "dev": "nodemon --ext js,ts --watch src --exec 'npm start'"
+    "dev": "nodemon --ext js,ts --watch src --watch '../../common' --watch '../../db' --exec 'npm start'"
   },
   "repository": {
     "type": "git",

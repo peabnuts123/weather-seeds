@@ -1,20 +1,22 @@
 import crypto from 'crypto';
 import express from 'express';
-import { MersenneTwister19937, integer, real } from 'random-js';
+import { MersenneTwister19937, real } from 'random-js';
 
+import RoundRouter from '@app/routes/round';
 import WeatherInfo, { WEATHER_TYPE } from '@db/models/WeatherInfo';
 
 const router = express.Router();
 
+// Routes
+router.use('/round', RoundRouter);
+
+// @TODO @DEBUG REMOVE
 router.get('/debug', async (req, res) => {
   let weatherInfoList: WeatherInfo[] = await WeatherInfo.findAll();
   return res.json(weatherInfoList);
 });
 
-interface Something {
-  seed: string;
-}
-
+// @TODO @DEBUG REMOVE
 router.get('/model/:seed', async (req, res) => {
   if (!req.params['seed']) {
     res.statusCode = 400;
@@ -61,6 +63,13 @@ router.get('/model/:seed', async (req, res) => {
   }
 
   res.json(responseValues);
+});
+
+// API catch all not-found
+router.use('*', (req, res) => {
+  return res.status(404).json({
+    error: `Cannot ${req.method} ${req.originalUrl}`,
+  });
 });
 
 export default router;

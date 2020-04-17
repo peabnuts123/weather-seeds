@@ -54,5 +54,30 @@
         "${workspaceFolder}/**/*.js"
       ]
     },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Server",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "args": [
+        "${workspaceRoot}/www/server/src/index.ts"
+      ],
+      "cwd": "${workspaceRoot}/www/server",
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register",
+        "-r",
+        "tsconfig-paths/register"
+      ],
+      "envFile": "${workspaceFolder}/www/.env.local",
+      "env": {
+        "TS_NODE_IGNORE": "false",
+      },
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ]
+    },
   ]
 }
