@@ -101,11 +101,13 @@ class RoundController {
       return res.sendStatus(500);
     }
 
-    // Weather info
-    let weather: WeatherInfo[] = await WeatherInfoRepository.getWeatherForRound(round);
-
-    // Predictors
-    let predictors: Predictor[] = await PredictorRepository.getPredictorsForRound(round);
+    // Make requests in parallel
+    let [weather, predictors] = await Promise.all([
+      // Weather info
+      WeatherInfoRepository.getWeatherForRound(round),
+      // predictors
+      PredictorRepository.getPredictorsForRound(round)
+    ]);
 
     // Serialize and send
     return res.json({
