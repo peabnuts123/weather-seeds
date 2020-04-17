@@ -1,104 +1,89 @@
 import { h } from "preact";
-import { useState } from "preact/hooks";
+import { useState, useEffect } from "preact/hooks";
 
-import DebugStore, { WeatherInfo, WeatherType } from '@app/data/store/debug';
+import RoundStore, { RoundDetails, Round } from "@app/data/store/round";
+import { WeatherInfo } from "@app/data/store/weather";
+import { PredictorAndPredictions } from "@app/data/store/predictor";
 
 const Home = () => {
   // State
-  const [fetchingWeatherInfo, setFetchingWeatherInfo] = useState(false);
-  const [allWeatherInfo, setAllWeatherInfo] = useState<WeatherInfo[] | undefined>(undefined);
-  const [fetchingModelPredictions, setFetchingModelPredictions] = useState(false);
-  const [modelInput, setModelInput] = useState('');
-  const [modelPredictions, setModelPredictions] = useState<WeatherType[] | undefined>(undefined);
-  const [currentDisplayedModelInput, setCurrentDisplayedModelInput] = useState<string | undefined>(undefined);
+  const [currentRoundDetails, setCurrentRoundDetails] = useState<RoundDetails | null>(null);
+  const [isFetchingCurrentRoundDetails, setIsFetchingCurrentRoundDetails] = useState<boolean>(false);
 
-  // Functions
-  const getAllWeatherInfo = async () => {
-    if (fetchingWeatherInfo) return;
-    setFetchingWeatherInfo(true);
-    const allWeatherInfo: WeatherInfo[] = await DebugStore.getAllWeatherInfo();
-    setFetchingWeatherInfo(false);
-    setAllWeatherInfo(allWeatherInfo);
-  };
+  // Alias
+  const currentRound = currentRoundDetails?.round as Round;
+  const currentRoundWeather = currentRoundDetails?.weather as WeatherInfo[];
+  const currentRoundPredictors = (currentRoundDetails?.predictors as PredictorAndPredictions[]);
 
-  const getModelPredictions = async () => {
-    if (fetchingModelPredictions) return;
-    if (!modelInput) return;
-    setFetchingModelPredictions(true);
-    const modelPredictions = await DebugStore.getModelPredictions(modelInput);
-    setCurrentDisplayedModelInput(modelInput);
-    setFetchingModelPredictions(false);
-    setModelPredictions(modelPredictions);
-  };
+  if (currentRoundPredictors) {
+    currentRoundPredictors.sort((a, b) => {
+      const valA = a.firstIncorrectDate?.valueOf() || Infinity;
+      const valB = b.firstIncorrectDate?.valueOf() || Infinity;
+      return valB - valA;
+    })
+  }
+
+  // Fetch current round details immediately
+  useEffect(() => {
+    (async function () {
+      setIsFetchingCurrentRoundDetails(true);
+
+      const roundDetails: RoundDetails = await RoundStore.getCurrentRoundDetails();
+      setCurrentRoundDetails(roundDetails);
+
+      setIsFetchingCurrentRoundDetails(false);
+    })();
+  }, []);
 
   return (
     <div class="Home">
+      <pre>
+        <code>@TODO put a better frontend on here</code>
+      </pre>
       <h1>Home</h1>
 
-      <div>
-        <label>
-          Model seed
-          <input type="text" class="Input Input--text" onInput={({ target }) => target && setModelInput((target as HTMLInputElement).value as string)} />
-        </label>
-        <button class="Button" onClick={() => getModelPredictions()} disabled={fetchingModelPredictions}>Get model predictions</button>
-      </div>
 
-      {fetchingModelPredictions && (
-        <em>Fetching model predictions...</em>
+      {isFetchingCurrentRoundDetails && (
+        <em>Fetching round details...</em>
       )}
 
-      {!modelPredictions && !fetchingModelPredictions && (
-        <em>Click &quot;Get model predictions&quot; to get predictions by the model defined by the given seed</em>
-      )}
-
-      {modelPredictions && !fetchingModelPredictions && (
+      {!isFetchingCurrentRoundDetails && currentRoundDetails && (
         <div>
-          <p>First {modelPredictions.length} predictions for model: <code>{currentDisplayedModelInput}</code></p>
-          <ol>
-            {modelPredictions.map((modelPrediction, index) => (
-              <li key={index}>{modelPrediction}</li>
-            ))}
-          </ol>
-        </div>
-      )}
+          <h2>Current round - {currentRound.id}</h2>
 
-      <br />
+          <h3 class="u-marginTop-lg">Info</h3>
+          <div class="u-marginLeft-lg">
+            <dl>
+              <dt>Started</dt>
+              <dd>{currentRound.startDate.toLocaleString()}</dd>
+            </dl>
+          </div>
 
-      <div>
-        <button class="Button" onClick={() => getAllWeatherInfo()}>Get weather info</button>
-      </div>
-
-      {fetchingWeatherInfo && (
-        <em>Fetching...</em>
-      )}
-
-      {!allWeatherInfo && !fetchingWeatherInfo && (
-        <em>Weather info not yet fetched. Click &quot;Get weather info&quot; to fetch.</em>
-      )}
-
-      {allWeatherInfo && !fetchingWeatherInfo && (
-        <div>
-          <h2>Weather Info (actual)</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Type</th>
-                <th>Created</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allWeatherInfo.map((weatherInfo) => (
-                <tr key={weatherInfo.id}>
-                  <td>{weatherInfo.id}</td>
-                  <td>{weatherInfo.type}</td>
-                  <td>{weatherInfo.createdAt.toLocaleString()}</td>
-                </tr>
+          <h3 class="u-marginTop-lg">Actual weather</h3>
+          <div className="u-marginLeft-lg">
+            <ol>
+              {currentRoundWeather.map((weather) => (
+                <li key={weather.id}>{weather.type} - {weather.createdAt.toLocaleString()}</li>
               ))}
-            </tbody>
-          </table>
+            </ol>
+          </div>
+
+          <h3 class="u-marginTop-lg">Predictors</h3>
+          {currentRoundPredictors.map((predictor) => (
+            <div key={predictor.id} class="u-marginBottom-lg u-marginLeft-lg">
+              <h4>Seed: <code>{predictor.seed}</code>{predictor.firstIncorrectDate ? (<span style="color: red"> - WRONG {predictor.firstIncorrectDate.toLocaleString()}</span>) : (<span style="color: dodgerblue"> - Still Valid</span>)}</h4>
+              <h4>Predictions</h4>
+              <ol>
+                {predictor.predictions.map((prediction, index) => (
+                  <li key={index}>{prediction}</li>
+                ))}
+              </ol>
+              <hr />
+            </div>
+          ))}
         </div>
       )}
+
     </div>
   );
 };

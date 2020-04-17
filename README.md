@@ -110,13 +110,14 @@ A docker stack of containers that can just fire up and run.
   - [x] ~~Make fetcher tolerant of unavailable DB - retry, etc.~~
   - [x] ~~Straighten out the Fetcher project lol its awful~~
   - [x] ~~Straighten out .env across the 3 containers~~
-  - [x] ~~Add eslint to fetcher project~~
+  - [ ] Add eslint to projects
   - [x] ~~Make express API that serves data from the DB~~
   - [ ] Write documentation for www running and development
   - [x] ~~Tell sequelize to stop logging SQL queries~~
   - [ ] Document `npm run dev:link-common`
   - [ ] Document .env and variables within
-  - [x] ~~(BUG) Make docker containers the right time zone~~
+  - [ ] Add an endpoint for fetcher interval / next fetch time
   - [ ] ? Move package.json to top level and have all projects share
   - [ ] ~~Move repos to common~~ and have fetcher/check use them
+  - [x] ~~(BUG) Make docker containers the right time zone~~
   - [ ] (BUG) Violation of Round/Seed unique constraint will crash - needs to be handled

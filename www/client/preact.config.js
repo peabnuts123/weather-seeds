@@ -35,6 +35,11 @@ export default {
       //  within a string, so that the resulting code receives a string
       API_BASE: JSON.stringify(process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.API_PORT}/api` : `/api`),
     }));
+
+    // Configure babel plugins
+    const { rule } = helpers.getLoadersByName(config, 'babel-loader')[0];
+    const babelConfig = rule.options;
+    babelConfig.plugins.push(require.resolve('@babel/plugin-proposal-optional-chaining'));
   }
 
 };

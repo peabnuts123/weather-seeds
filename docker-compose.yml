@@ -48,6 +48,8 @@ services:
     image: 'node:lts-alpine'
     restart: unless-stopped
     env_file: www/.env.docker
+    ports:
+      - '8080:8080'
     volumes:
       # Timezone
       - '${LOCAL_TIME_MOUNT:-/etc/localtime}:/etc/localtime:ro'

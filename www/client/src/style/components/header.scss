@@ -16,8 +16,12 @@
 	padding: 0 15px;
 	font-size: 24px;
 	line-height: 56px;
-	font-weight: 400;
-	color: #FFF;
+  font-weight: 400;
+
+  a {
+    color: #FFF;
+    text-decoration: none;
+  }
 }
 
 .Header nav {
