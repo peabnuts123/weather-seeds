@@ -9,19 +9,8 @@ class RoundRepository {
   /**
    * Get all Rounds
    */
-  public async getAll(includePredictors: boolean = false): Promise<Round[]> {
-    let queryOptions: FindOptions = {};
-
-    // JOIN on predictors if requested
-    if (includePredictors) {
-      queryOptions.include = [{
-        model: Predictor,
-        required: true,
-        as: 'predictors',
-      }];
-    }
-
-    return Round.findAll(queryOptions);
+  public async getAll(): Promise<Round[]> {
+    return Round.findAll();
   }
 
   /**
@@ -29,25 +18,14 @@ class RoundRepository {
    *
    * @param id Round id
    */
-  public async getById(id: number, includePredictors: boolean = false): Promise<Round | null> {
-    let queryOptions: FindOptions = {
+  public async getById(id: number): Promise<Round | null> {
+    return Round.findOne({
       where: {
         id: {
           [Op.eq]: id
         },
       },
-    };
-
-    // JOIN on predictors if requested
-    if (includePredictors) {
-      queryOptions.include = [{
-        model: Predictor,
-        required: true,
-        as: 'predictors',
-      }];
-    }
-
-    return Round.findOne(queryOptions);
+    });
   }
 
   /**
@@ -56,26 +34,14 @@ class RoundRepository {
    *
    * @throws If there are more than 1 active round
    */
-  public async getCurrent(includePredictors: boolean = false): Promise<Round | null> {
-    let queryOptions: FindOptions = {
+  public async getCurrent(): Promise<Round | null> {
+    const activeRounds: Round[] = await Round.findAll({
       where: {
         endDate: {
           [Op.eq]: null,
         },
       },
-    };
-
-    // JOIN on predictors if requested
-    if (includePredictors) {
-      queryOptions.include = [{
-        model: Predictor,
-        required: true,
-        as: 'predictors',
-      }];
-    }
-
-    const activeRounds: Round[] = await Round.findAll(queryOptions);
-    Logger.log(LogLevel.debug, `Active rounds from DB: `, activeRounds.map((x) => x.toJSON()));
+    });
 
     if (activeRounds.length > 1) {
       throw new Error("More than 1 round is active");
