@@ -3,3 +3,6 @@
 **/.env.docker
 **/.env.local
 **/local-env.sh
+
+# Silly output from preact build
+size-plugin.json

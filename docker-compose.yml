@@ -13,8 +13,6 @@ services:
       - './db/data:/var/lib/postgresql/data'
       # db project source code
       - './db:/var/lib/postgresql/src'
-    ports:
-      - '5432:5432'
     working_dir: /var/lib/postgresql
     entrypoint: src/run.sh
 
@@ -34,8 +32,8 @@ services:
       # Fake node_modules for shared code
       - './fetcher/node_modules:/home/node/node_modules:ro'
       # Add daily scripts to daily cron folder
-      - './fetcher/daily-scripts/01-fetch.sh:/etc/periodic/${FETCHER_JOB_FREQUENCY:-daily}/01-fetch'
-      - './fetcher/daily-scripts/02-check.sh:/etc/periodic/${FETCHER_JOB_FREQUENCY:-daily}/02-check'
+      - './fetcher/cron:/home/node/cron'
+      - './fetcher/cron/_jobs:/home/node/cron/${FETCHER_JOB_FREQUENCY:-daily}'
       # Custom crontab configuration
       - './fetcher/crontab.properties:/var/spool/cron/crontabs/root'
     working_dir: /home/node/fetcher
@@ -48,8 +46,6 @@ services:
     image: 'node:lts-alpine'
     restart: unless-stopped
     env_file: www/.env.docker
-    ports:
-      - '8080:8080'
     volumes:
       # Timezone
       - '${LOCAL_TIME_MOUNT:-/etc/localtime}:/etc/localtime:ro'
