@@ -43,7 +43,17 @@ export async function connectToDatabase(config: DbConfig): Promise<Sequelize> {
       Logger.log(`Connecting to DB. Attempt ${dbConnectionAttempt++}`);
 
       // Test DB connection
-      await sequelize.authenticate();
+      await sequelize.authenticate()
+        .then(() => {
+          Logger.log("[DEBUG] DB connection successful");
+        })
+        .catch((e: any) => {
+          Logger.log("[DEBUG] DB connection FAILED");
+          Logger.logError("[DEBUG] [ERROR] DB connection FAILED");
+          throw e;
+        });
+
+      Logger.log("Successfully connected to database.");
 
       // Connected successfully (i.e. no error was thrown)
       connectionSuccessful = true;

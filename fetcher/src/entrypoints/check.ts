@@ -13,91 +13,95 @@ import WeatherInfo from '@db/models/WeatherInfo';
 
 
 async function main() {
-  // Configure log level (which is set to debug by default in Config)
-  Logger.setLogLevel(LogLevel.normal);
+  try {
+    // Configure log level (which is set to debug by default in Config)
+    Logger.setLogLevel(LogLevel.normal);
 
-  // Establish connection to database
-  await connectToDatabase(Config.DB);
+    // Establish connection to database
+    await connectToDatabase(Config.DB);
 
-  // Get the current round (there should only be 1 active round)
-  const activeRounds: Round[] = await Round.findAll({
-    where: {
-      endDate: {
-        [Op.eq]: null,
+    // Get the current round (there should only be 1 active round)
+    const activeRounds: Round[] = await Round.findAll({
+      where: {
+        endDate: {
+          [Op.eq]: null,
+        },
       },
-    },
-  });
-
-  /** The only round that is currently active */
-  let currentRound: Round;
-
-  if (activeRounds.length > 1) {
-    // More than 1 active round - oh noes (requires manual intervention in the DB to recover from this)
-    throw new Error("Cannot continue processing. More than 1 active round! Manual intervention required");
-  } else if (activeRounds.length === 0) {
-    // No active rounds so start a new one!
-    Logger.log("No active Rounds!");
-
-    // Create Round object
-    currentRound = await createNewRound();
-  } else {
-    Logger.log("There is an on-going round")
-    // There is only 1 round - use it
-    currentRound = activeRounds[0];
-  }
-
-  // 1 Get all active predictors for the current round
-  let activePredictors: Predictor[] = await currentRound.getPredictors({
-    where: {
-      firstIncorrectDate: {
-        [Op.eq]: null,
-      },
-    },
-  });
-
-  Logger.log(`Testing ${activePredictors.length} active predictors considering new data`);
-
-  // 2 Any seeds that are wrong are recorded that they were incorrect
-  let numIncorrectPredictors = 0;
-  let numCorrectPredictors = 0;
-  let currentRoundWeatherData = await getWeatherInfoForRound(currentRound);
-  Logger.log(LogLevel.debug, "Current round actual weather", currentRoundWeatherData.map((x) => x.weatherType));
-  for (let i = 0; i < activePredictors.length; i++) {
-    let predictor = activePredictors[i];
-    // Check if predictor is still correct
-    let predictorStillCorrect = await isPredictorStillCorrect(activePredictors[i], currentRoundWeatherData);
-
-    // If it is not, mark it as incorrect
-    if (!predictorStillCorrect) {
-      numIncorrectPredictors++;
-      // Set firstIncorrectDate to now
-      Logger.log(LogLevel.debug, `Marking predictor ${predictor.get('id')} as incorrect`);
-      await predictor.update({
-        firstIncorrectDate: new Date(),
-      });
-    } else {
-      numCorrectPredictors++;
-    }
-  }
-
-  Logger.log("Results:");
-  Logger.log(`${numCorrectPredictors} predictors were still correct`);
-  Logger.log(`${numIncorrectPredictors} predictors no longer correct`);
-
-  // 3 If there are no remaining valid seeds in a round - mark it inactive
-  if (numCorrectPredictors === 0) {
-    Logger.log("There are no correct predictors left. Marking round as ended. A new round will be started");
-
-    // Set round's end date to now
-    await currentRound.update({
-      endDate: new Date(),
     });
 
-    // Start a new round immediately
-    await createNewRound();
-  }
+    /** The only round that is currently active */
+    let currentRound: Round;
 
-  Logger.log("Finished processing.")
+    if (activeRounds.length > 1) {
+      // More than 1 active round - oh noes (requires manual intervention in the DB to recover from this)
+      throw new Error("Cannot continue processing. More than 1 active round! Manual intervention required");
+    } else if (activeRounds.length === 0) {
+      // No active rounds so start a new one!
+      Logger.log("No active Rounds!");
+
+      // Create Round object
+      currentRound = await createNewRound();
+    } else {
+      Logger.log("There is an on-going round")
+      // There is only 1 round - use it
+      currentRound = activeRounds[0];
+    }
+
+    // 1 Get all active predictors for the current round
+    let activePredictors: Predictor[] = await currentRound.getPredictors({
+      where: {
+        firstIncorrectDate: {
+          [Op.eq]: null,
+        },
+      },
+    });
+
+    Logger.log(`Testing ${activePredictors.length} active predictors considering new data`);
+
+    // 2 Any seeds that are wrong are recorded that they were incorrect
+    let numIncorrectPredictors = 0;
+    let numCorrectPredictors = 0;
+    let currentRoundWeatherData = await getWeatherInfoForRound(currentRound);
+    Logger.log(LogLevel.debug, "Current round actual weather", currentRoundWeatherData.map((x) => x.weatherType));
+    for (let i = 0; i < activePredictors.length; i++) {
+      let predictor = activePredictors[i];
+      // Check if predictor is still correct
+      let predictorStillCorrect = await isPredictorStillCorrect(activePredictors[i], currentRoundWeatherData);
+
+      // If it is not, mark it as incorrect
+      if (!predictorStillCorrect) {
+        numIncorrectPredictors++;
+        // Set firstIncorrectDate to now
+        Logger.log(LogLevel.debug, `Marking predictor ${predictor.get('id')} as incorrect`);
+        await predictor.update({
+          firstIncorrectDate: new Date(),
+        });
+      } else {
+        numCorrectPredictors++;
+      }
+    }
+
+    Logger.log("Results:");
+    Logger.log(`${numCorrectPredictors} predictors were still correct`);
+    Logger.log(`${numIncorrectPredictors} predictors no longer correct`);
+
+    // 3 If there are no remaining valid seeds in a round - mark it inactive
+    if (numCorrectPredictors === 0) {
+      Logger.log("There are no correct predictors left. Marking round as ended. A new round will be started");
+
+      // Set round's end date to now
+      await currentRound.update({
+        endDate: new Date(),
+      });
+
+      // Start a new round immediately
+      await createNewRound();
+    }
+
+    Logger.log("Finished processing successfully")
+  } catch (e) {
+    Logger.logError("Failed while processing", e)
+  }
 }
 
 runJob('check', main);
