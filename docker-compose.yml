@@ -18,7 +18,7 @@ services:
 
   fetcher:
     container_name: 'weather_fetcher'
-    image: 'node:lts-alpine'
+    image: 'node:12-alpine'
     restart: unless-stopped
     env_file: fetcher/.env.docker
     volumes:
@@ -43,7 +43,7 @@ services:
 
   www:
     container_name: 'weather_www'
-    image: 'node:lts-alpine'
+    image: 'node:12-alpine'
     restart: unless-stopped
     env_file: www/.env.docker
     volumes:
