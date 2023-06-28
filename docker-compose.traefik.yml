@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  www:
+    labels:
+      # Traefik config
+      traefik.enable: "true"
+      traefik.frontend.rule: "Host:${WWW_HOST_NAME}"
+      traefik.port: "8080"
+      traefik.frontend.redirect.entryPoint: https
+    networks:
+      # Connect to external network used by traefik
+      - traefik
+      - default
+
+networks:
+  default:
+  # Named network created for Traefik
+  traefik:
+    external: true
+
